@@ -45,17 +45,26 @@ def compatibility_distance(char1_w, char1_j, char1_max, char2_w, char2_j, char2_
     # compatibility = '{0:.10f}'.format(compatibility)
     return compatibility
 
+# Simulation parameters
 n = 100
 reps = 1000
 compat_bonus = 0
 spec = '_n100x1000_extra_rskill'
 w_treatment = False
 j_treatment = True
+w_treatment_prob = 0.5
+j_treatment_prob = 0.5
+w_skill_treatment_mag = 46 * 2
+w_edu_treatment_mag = 0.9 * 2
+j_skill_treatment_mag = 46 * 2
+j_edu_treatment_mag = 0.9 * 2
 
+# Seeds
 random.seed(0)
 np.random.seed(0)
 
-# STATS
+
+# Simulation stats dataframe
 stats = pd.DataFrame(columns=['iterat',
                               'uw_uj',
                               'uw_mj',
@@ -94,34 +103,49 @@ stats = pd.DataFrame(columns=['iterat',
                               'j_treated'
                               ])
 
+# Set rep counter to 0
 rep = 0
 print()
 print('Simulation in progress...')
+
+# Simulation loop
 while rep < reps:
 
+    # Progress message
     print(str(round(rep/reps*100,1)) + '%')
 
-    # WORKERS
+    # ------------------------------------------
+    # Generate data for workers' characterictics
+    # ------------------------------------------
 
+    # Education
     isco_sl = generate_random_sequence('normal', n, 2.7, 0.9)
     isco_sl = [round(num) for num in isco_sl]
     isco_sl = [1 if num < 1 else num for num in isco_sl]
     isco_sl = [4 if num > 4 else num for num in isco_sl]
 
+    # Skill
     literacy = generate_random_sequence('normal', n, 272, 46)
     literacy = [round(num) for num in literacy]
     literacy = [0 if num < 0 else num for num in literacy]
     literacy = [500 if num > 500 else num for num in literacy]
 
+    # Previous earnings
     prev_earn = generate_random_sequence('log', n, 2.446547, .7075674)
     prev_earn = [round(num) for num in prev_earn]
     prev_earn = [0 if num < 0 else num for num in prev_earn]
 
+    # Compatibility
     compat = [0]*n
+
+    # Match status
     match = [9999]*n
+
+    # Required education and skill
     r_edu = [0]*n
     r_skill = [0]*n
 
+    # Put the data into a dataframe
     data = {'edu': isco_sl,
             'skill': literacy,
             'prev_earn': prev_earn,
@@ -131,37 +155,52 @@ while rep < reps:
             'r_skill' : r_skill}
     workers = pd.DataFrame(data)
 
-    mean = np.mean(workers['prev_earn'])
-    sd = np.std(workers['prev_earn'])
+    # !!! potentially redundant !!!
+    # mean = np.mean(workers['prev_earn'])
+    # sd = np.std(workers['prev_earn'])
+
+    # Aspiration (selectivity in the slides)
     workers['aspir'] = generate_random_sequence('normal', n, 0.5, 0.1)
     workers['aspir'] = workers['aspir'].clip(0, 1)
+
+    # Initial aspiration
     workers['aspir_init'] = workers['aspir']
 
+    # Occupation
     mean = np.mean(workers['skill'])
     sd = np.std(workers['skill'])
     workers['occupat'] = np.random.beta((5 - ((workers['skill'] - mean) / sd) * 5).clip(0.01, 9.99),
                                         (5 + ((workers['skill'] - mean) / sd) * 5).clip(0.01, 9.99)) * 2
     workers['occupat'] = round(workers['occupat'])
 
-    # JOBS
+    # ----------------------------------------
+    # Generate data for firms' characterictics
+    # ----------------------------------------
 
+    # Education requirement
     isco_sl = generate_random_sequence('normal', n, 2.7, 0.9)
     isco_sl = [round(num) for num in isco_sl]
     isco_sl = [1 if num < 1 else num for num in isco_sl]
     isco_sl = [4 if num > 4 else num for num in isco_sl]
 
+    # Skill requirement
     literacy = generate_random_sequence('normal', n, 272, 46)
     literacy = [round(num) for num in literacy]
     literacy = [0 if num<0 else num for num in literacy]
     literacy = [0 if num > 500 else num for num in literacy]
 
+    # Wage
     wage = generate_random_sequence('log', n, 2.446547, .7075674)
     wage = [round(num) for num in wage]
     wage = [0 if num < 0 else num for num in wage]
 
+    # Compatibility
     compat = [0]*n
+
+    # Match status
     match = [9999]*n
 
+    # Put the data into a dataframe
     data = {'edu': isco_sl,
             'skill': literacy,
             'wage': wage,
@@ -169,147 +208,228 @@ while rep < reps:
             'match': match}
     jobs = pd.DataFrame(data)
 
-    mean = np.mean(jobs['wage'])
-    sd = np.std(jobs['wage'])
+    # !!! potentially redundant !!!
+    # mean = np.mean(jobs['wage'])
+    # sd = np.std(jobs['wage'])
+    
+    # Aspiration (selectivity in the slides)
     jobs['aspir'] = generate_random_sequence('normal', n, 0.5, 0.1)
     jobs['aspir'] = jobs['aspir'].clip(0, 1)
     jobs['aspir_init'] = jobs['aspir']
 
-    # TREATMENT
+    # ----------------------- 
+    # Treatment specification
+    # -----------------------
 
+    # Workers' treatment
     workers['treatment'] = 0
     if w_treatment == True:
         for i in workers.index:
-            if random.uniform(0, 1) <= 1 / 2:
-                #workers.loc[i, 'skill'] = workers['skill'][i] + (46 * 2)
-                workers.loc[i, 'edu'] = round(workers['edu'][i] + (0.9 * 2))
+            if random.uniform(0, 1) <= w_treatment_prob:
+                # Skill treatment
+                workers.loc[i, 'skill'] = workers['skill'][i] + w_skill_treatment_mag
+                # Education treatment
+                workers.loc[i, 'edu'] = round(workers['edu'][i] + w_edu_treatment_mag)
+                # Treatment indicator
                 workers.loc[i, 'treatment'] = 1
-        workers['edu'] = workers['edu'].clip(1, 4)
+        if w_edu_treatment_mag != 0:
+            workers['edu'] = workers['edu'].clip(1, 4)
 
     jobs['treatment'] = 0
     if j_treatment == True:
         for j in jobs.index:
-            if random.uniform(0, 1) <= 1 / 2:
-                jobs.loc[j, 'skill'] = jobs['skill'][j] + (46 * 2)
-                #jobs.loc[j, 'edu'] = round(jobs['edu'][j] + (0.9 * 2))
+            if random.uniform(0, 1) <= j_treatment_prob:
+                # Skill treatment
+                jobs.loc[j, 'skill'] = jobs['skill'][j] + j_skill_treatment_mag
+                # Education treatment
+                jobs.loc[j, 'edu'] = round(jobs['edu'][j] + j_edu_treatment_mag)
+                # Treatment indicator
                 jobs.loc[j, 'treatment'] = 1
-        #jobs['edu'] = jobs['edu'].clip(1, 4)
+        if j_edu_treatment_mag != 0:
+            jobs['edu'] = jobs['edu'].clip(1, 4)
 
-    # MATCHING
-    iterat = 0
-    uw_uj = 0
-    uw_mj = 0
-    mw_uj = 0
-    mw_mj = 0
-    match_fail = 0
-    w_rejects = 0
-    j_rejects = 0
-    mututal_reject = 0
-    av_aspir_w1 = workers['aspir'].mean()
-    av_aspir_j1 = jobs['aspir'].mean()
-    av_aspir_w2 = 0
-    av_aspir_j2 = 0
-    av_compat_1 = 0
+    # Simulation stats data
+    iterat = 0 # iteration counter
+    uw_uj = 0 # unmatched workers matching with unmatched job count
+    uw_mj = 0 # unmatched workers matching with matched job count
+    mw_uj = 0 # matched workers matching with unmatched job count
+    mw_mj = 0 # matched workers matching with matched job count
+    match_fail = 0 # failed matches count
+    w_rejects = 0 # rejections by the workers count
+    j_rejects = 0 # rejections by the firms count
+    mututal_reject = 0 # mutual rejections count
+    av_aspir_w1 = workers['aspir'].mean() # average aspiration level for workers before the simulation
+    av_aspir_j1 = jobs['aspir'].mean() # average aspiration level for firms before the simulation
+    av_aspir_w2 = 0 # average aspiration level for workers after the simulation
+    av_aspir_j2 = 0 # average aspiration level for firms after the simulation
+    av_compat_1 = 0 # average compatibility level for workers after the first iteration (zero in the first iteration)
 
+    # All matched indicator
     all_matched = False
+
+    # Create log
     log = []
+
+    # Matching loop
     while all_matched == False:
         iterat += 1
+        
+        # Update average aspiration level
         if iterat == 2:
             av_compat_1 = workers['compat'].mean()
+        
+        # Loop through all workers
         for i in workers.index:
+
+            # For a single rep simulation, print the percentage of unmatched workers
             if reps == 1:
                 print('Unmatched workers: ' + str((round(workers['match'].value_counts()[9999], 2)/n*100) if 9999 in workers['match'].unique() else 0) + '%')
 
+            # Check if all workers are matched
             if all_matched == False:
 
-                # for UNMATHCED worker
+                # --------------------------------
+                # For an unmatched worker
+                # --------------------------------
+
+                # Check if the worker is unmatched
                 if workers['match'][i] == 9999:
-                    # generate the size of network and the list network jobs
+                    
+                    # Generate the size of network
                     m = round(np.random.normal(n / 2, n / 10))
                     if m < 1:
                         m = 1
                     elif m > n-1:
                         m = n-1
+
+                    # List for network jobs
                     network_index = []
-                    # if there're 5% or less of empty jobs, put them in the network
+
+                    # Check if the number of empty jobs is 10% or less
                     empty_jobs = 0
                     if jobs['match'].value_counts()[9999] <= 0.1 * n:
                         for empty_job in jobs.loc[jobs['match']==9999].index:
+                            # Add empty jobs to the network
                             network_index.append(empty_job)
+                            # Penalize the aspiration level of the empty job
                             jobs.loc[empty_job, 'aspir'] = max(0, jobs['aspir'][empty_job] - 0.05)
+                            # Update the count of empty jobs
                             empty_jobs += 1
-                    # pick jobs from the population to fill the network
+
                     j = 0
+                    # Check if there is space left in the network
                     while j < m - empty_jobs:
+                        # Randomly pick a job from the population
                         k = random.randint(0, n-1)
+                        # Check if the job is not already in the network
                         if k not in network_index:
+                            # Add the job to the network
                             network_index.append(k)
                             j += 1
-                    # pull the data from the jobs dataset corresponding to the network
+
+                    # Pull the data from the jobs dataset corresponding to the network
                     network = jobs.loc[network_index]
-                    # sort jobs in network by wage
+                    
+                    # Sort jobs in network by wage
                     network = network.sort_values(['match', 'wage'], ascending=False)
-                    # generate a list of indicies from the jobs pool dataset
+                    
+                    # Generate a list of indicies from the jobs pool dataset
                     network_index = network.index
-                    # indicator for match occuring
+
+                    # Indicator for a match occuring
                     match = False
-                    # indicator for unsaccessfully applying to all jobs in network
+                    
+                    # Indicator for being rejected by all jobs in the network
                     none_left = False
-                    # loop through all jobs in network until either match occurs or no unapplied jobs left
+                    
+                    # Loop through all jobs in network until either a match occurs or no unapplied jobs left
                     k = 0
+                    # Check if no match has occured and there are still jobs in the network
                     while (match == False) and (none_left == False):
+                        
+                        # !!! potentially redundant !!!
                         # print(str(i) + ' applies for ' + str(network_index[k]) + ', number ' + str(k))
-                        # get agents' characteristics and aspiration levels
+                        
+                        # Pull the agents' characteristics from the dataset
                         aspir_i = workers['aspir'][i]
                         aspir_j = jobs['aspir'][network_index[k]]
                         edu_w = workers['edu'][i]
                         edu_j = jobs['edu'][network_index[k]]
                         skill_w = workers['skill'][i]
                         skill_j = jobs['skill'][network_index[k]]
-                        # compute agents' compatibility
+                        
+                        # Compute agents' compatibility
                         compat = compatibility_distance(edu_w, edu_j, 4, skill_w, skill_j, 500)
-                        # for UNMATHCED job
+
+                        # --------------------------------
+                        # For an unmatched job
+                        # --------------------------------
+                        
+                        # Check if the job is unmatched
                         if jobs['match'][network_index[k]] == 9999:
-                            # compatibility is greater than aspiration for both agents
+                            
+                            # Check if compatibility is greater than aspiration for both agents
                             if (compat > aspir_i) and (compat > aspir_j):
-                                # updat compatibility levels and match status
+                                # Match occurs
+
+                                # Update compatibility levels
                                 workers.loc[i, 'compat'] = compat + compat_bonus
+                                jobs.loc[network_index[k], 'compat'] = compat + compat_bonus
+
+                                # Update match status
                                 workers.loc[i, 'match'] = network_index[k]
+                                jobs.loc[network_index[k], 'match'] = i
+
+                                # Update required education and skill
                                 workers.loc[i, 'r_edu'] = jobs['edu'][network_index[k]]
                                 workers.loc[i, 'r_skill'] = jobs['skill'][network_index[k]]
-                                jobs.loc[network_index[k], 'compat'] = compat + compat_bonus
-                                jobs.loc[network_index[k], 'match'] = i
-                                # add a record to the log
+
+                                # Add a record to the log
                                 log.append(str(round(compat,2)) + ': unmatched ' + str(i) + ' matched with unmatched ' + str(network_index[k]))
-                                # math occurs
+                                
+                                # Update the count of unmatched workers matching with unmatched jobs
                                 uw_uj += 1
+
+                                # Update the match status
                                 match = True
+
+                                # Update the all matched indicator
                                 all_matched = (9999 not in np.unique(workers['match']))
                             else:
-                                # worker rejects the job
+                                # Match fails
+                                
+                                # Check if the worker rejects the job
                                 if (compat <= aspir_i) and (compat > aspir_j):
+                                    # Update the count of rejections by the workers
                                     w_rejects += 1
-                                    # decrease firm's aspiration
+                                    # Penalize aspiration of the firm
                                     jobs.loc[network_index[k], 'aspir'] = max(0, jobs['aspir'][network_index[k]] - 0.05)
-                                # firm rejects the worker
+                                
+                                # Check if the firm rejects the worker
                                 elif (compat > aspir_i) and (compat <= aspir_j):
+                                    # Update the count of rejections by the firms
                                     j_rejects += 1
-                                    # decrease worker's aspiration
+                                    # Penalize aspiration of the worker
                                     workers.loc[i, 'aspir'] = max(0, workers['aspir'][i]-0.05)
-                                # both worker and firm reject each other
+
+                                # Check if both worker and firm reject each other
                                 elif (compat <= aspir_i) and (compat <= aspir_j):
+                                    # Update the count of mutual rejections
                                     mututal_reject += 1
-                                    # decrease aspiration of both worker and firm
+                                    # Penalize aspiration of both worker and firm
                                     jobs.loc[network_index[k], 'aspir'] = max(0, jobs['aspir'][network_index[k]] - 0.05)
                                     workers.loc[i, 'aspir'] = max(0, workers['aspir'][i] - 0.05)
-                                # if there's still jobs to apply, move on to the next one
-                                # exit the loop otherwise
+                                
+                                # Check if there are still jobs to apply
                                 if k < m-1:
+                                    # Move on to the next job in the network
                                     k += 1
                                 else:
+                                    # Update the count of failed matches
                                     match_fail += 1
+                                    # Update the all the no jobs left indicator
                                     none_left = True
+                                    # Add a record to the log
                                     log.append(str(round(compat,2)) + ': unmatched ' + str(i) + ' failed to match')
 
                         # for MATHCED job
