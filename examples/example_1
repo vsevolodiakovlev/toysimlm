@@ -2,17 +2,12 @@ import sys
 import os
 
 # Add the root directory of the project to sys.path
-file_wd = os.getcwd()
-if '/' in file_wd:
-    wd = '/'.join(file_wd.split('/')[:-1])
-elif '\\' in file_wd:
-    wd = '/'.join(file_wd.split('\\')[:-1])
-sys.path.append(wd)
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__name__))))
 print()
 print('Working directory is set to: ' + os.getcwd())
 print()
 
-from toymsim_lm.main import toymsim_lm
+from toymsim_lm.src.main import toymsim_lm
 
 stats, workers, jobs, log = toymsim_lm(n = 100,
                                         reps = 100,
