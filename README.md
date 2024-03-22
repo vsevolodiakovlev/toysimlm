@@ -1,10 +1,10 @@
 # Toy Microsimulation of Labour Mismatch
 
-[Usage](#to-use-the-module) | [References](#references)
+[Usage](#to-use-the-module) | [References](#references) | [Examples](#other-examples)
 
-This module implements a simple midcrosimulation of a labour mismatch based on a static version of the two-sided matching model developed by Zinn et al. (2012). The purpose of the simulation is to produce matching outcomes of a labour market populated by a set of workers and a set of jobs with pre-defined characteristics and compute the output of various mismatch measure. This can then be analysed to gain a deeper understandin of the construct of the mismatch measures. For the description of the economic model, available mismatch measures and a demonstration, please see the [slides](./toysimlm_slides.pdf).
+This module implements a simple microsimulation of labour mismatch based on a static version of the two-sided matching model developed by Zinn et al. (2012). The purpose of the simulation is to produce matching outcomes of a labour market populated by a set of workers and a set of jobs with pre-defined characteristics and compute the output of various mismatch measure. This can then be analysed to gain a deeper understandin of the construct of the mismatch measures. For the description of the economic model, available mismatch measures and a demonstration, please see the [slides](./toysimlm_slides.pdf).
 
-**Please note that this microsimulation is based on a stylized *(toy)* model and should be taken as more of a methodological experiment and illustration than a inference tool. Nevertheless, any suggestion regarding either the code or economics are most welcome**
+*Please note that this microsimulation is based on a stylized **(toy)** model and should be taken as more of a methodological experiment and illustration than a inference tool. Nevertheless, any suggestion regarding either the code or economics are most welcome*
 
 ## To use the module
 
@@ -25,7 +25,7 @@ stats, workers, jobs, log = toysimlm.simulate()
  - **log** — additional file containing matching outcomes for each iteration of the matching procedure for the last repetition illustrating the algorithm
 7. Analyse the simulation output using a statistical software of your choice
 
-## Examples
+## Other examples
 
 ## References
 
