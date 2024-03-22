@@ -199,6 +199,7 @@ def compatibility_distance(char1_w, char1_j, char1_max, char2_w, char2_j, char2_
     return compatibility
 
 # Simulation parameters
+"""
 n = 100
 reps = 1000
 seed = 0
@@ -212,8 +213,9 @@ w_edu_treatment_mag = 0.9 * 2
 j_skill_treatment_mag = 46 * 2
 j_edu_treatment_mag = 0.9 * 2
 well_matched_threshold = 0.7229727
+"""
 
-def toymsim_lm(n = 100,
+def simulate(n = 100,
               reps = 1000,
               seed = 0,
               spec = '_n100x1000_notreat',
