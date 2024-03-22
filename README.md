@@ -10,7 +10,7 @@ This module implements a simple midcrosimulation of a labour mismatch based on a
 
 1. Create a new direcory where you want the simulation output files to be generated and make it your working directory
 2. Clone the repository to that directory
-3. Make sure ``pandas`` package is installed and updated
+3. Make sure ``pandas`` package is installed
 4. Import the module:
 ```python
 import toysimlm
