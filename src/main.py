@@ -1,112 +1,3 @@
-"""
-Toy simulation of labour mismatch
-=================================
-
-This script contains the main simulation function for the toy simulation of labour mismatch.
-
-The simulation is based on the following steps:
-
-1. Generate data for workers' and firms' characteristics.
-2. Loop through all workers and firms to match them based on their characteristics.
-3. Update the match status and required education and skill for the matched agents.
-4. Update the aspiration levels for the agents.
-5. Repeat the matching process until all agents are matched.
-
-The simulation function returns the following outputs:
-
-1. A DataFrame containing the simulation statistics.
-2. A DataFrame containing the workers' characteristics.
-3. A DataFrame containing the firms' characteristics.
-4. A list containing the log of the simulation.
-
-The simulation function takes the following parameters:
-
-1. n : int, optional
-    The number of workers and firms in the simulation. Default is 100.
-2. reps : int, optional
-    The number of replications of the simulation. Default is 1000.
-3. seed : int, optional
-    The seed for the random number generator. Default is 0.
-4. spec : str, optional
-    The simulation specification name. Default is '_n100x1000_notreat'.
-5. w_treatment : bool, optional
-    Whether to apply treatment to workers. Default is False.
-6. j_treatment : bool, optional
-    Whether to apply treatment to firms. Default is False.
-7. w_treatment_prob : float, optional
-    The probability of workers receiving treatment. Default is 0.5.
-8. j_treatment_prob : float, optional
-    The probability of firms receiving treatment. Default is 0.5.
-9. w_skill_treatment_mag : float, optional
-    The magnitude of skill treatment for workers. Default is 92.
-10. w_edu_treatment_mag : float, optional
-    The magnitude of education treatment for workers. Default is 1.8.
-11. j_skill_treatment_mag : float, optional
-    The magnitude of skill treatment for firms. Default is 92.
-12. j_edu_treatment_mag : float, optional
-    The magnitude of education treatment for firms. Default is 1.8.
-13. well_matched_threshold : float, optional
-    The threshold for well-matched agents. Default is 0.7229727.
-    
-The simulation function is called as follows:
-    
-        stats, workers, jobs, log = toymsim_lm(n = 100,
-                                            reps = 1000,
-                                            seed = 0,
-                                            spec = '_n100x1000_notreat',
-                                            w_treatment = False,
-                                            j_treatment = False,
-                                            w_treatment_prob = 0.5,
-                                            j_treatment_prob = 0.5,
-                                            w_skill_treatment_mag = 46 * 2,
-                                            w_edu_treatment_mag = 0.9 * 2,
-                                            j_skill_treatment_mag = 46 * 2,
-                                            j_edu_treatment_mag = 0.9 * 2,
-                                            well_matched_threshold=0.7229727)
-
-The simulation function returns the following outputs:
-
-1. stats : pandas DataFrame
-    A DataFrame containing the simulation statistics.
-2. workers : pandas DataFrame   
-    A DataFrame containing the workers' characteristics.
-3. jobs : pandas DataFrame
-    A DataFrame containing the firms' characteristics.
-4. log : list
-    A list containing the log of the simulation.
-
-The simulation function generates random data for workers' and firms' characteristics, such as education, skill, previous earnings, wage, compatibility, match status, required education, and required skill. It then simulates the matching process between workers and firms based on their characteristics and compatibility. The simulation tracks various statistics, such as the number of unmatched workers, matched workers, unmatched jobs, matched jobs, failed matches, rejections by workers, rejections by firms, mutual rejections, average aspiration levels, average compatibility levels, average education, average skill, average previous earnings, occupation distribution, well-matched indicator, share of under-matched workers, share of well-matched workers, share of over-matched workers, average firms' education requirement, average firms' skill requirement, average wage, share of treated workers, and share of treated firms.
-
-The simulation function uses the following helper functions:
-
-1. generate_random_sequence : Generate a sequence of random variables based on the specified distribution.
-2. compatibility_distance : Compute the compatibility distance between two agents.
-
-The simulation function is based on the following assumptions:
-
-1. The simulation is based on a toy model of labour mismatch.
-2. The simulation generates random data for workers' and firms' characteristics.
-3. The simulation matches workers and firms based on their characteristics and compatibility.
-4. The simulation tracks various statistics related to the matching process.
-5. The simulation allows for the specification of treatment effects on workers and firms.
-6. The simulation calculates the share of under-matched, well-matched, and over-matched workers based on different matching criteria.
-
-The simulation function is useful for understanding the dynamics of labour mismatch and the impact of treatment effects on the matching process. The simulation can be used to explore different scenarios and test various hypotheses related to labour market outcomes.
-
-The simulation function can be extended by adding additional features, such as different matching algorithms, more complex treatment effects, and alternative matching criteria. The simulation can also be used to analyze the sensitivity of the results to different parameter values and assumptions.
-
-The simulation function can be applied to real-world data to analyze labour market outcomes and inform policy decisions. By simulating different scenarios and treatment effects, the simulation can help policymakers design more effective interventions to reduce labour mismatch and improve labour market efficiency.
-
-The simulation function provides a flexible framework for studying labour market dynamics and exploring the impact of different factors on the matching process. By simulating a toy model of labour mismatch, the function allows researchers to gain insights into the complex interactions between workers and firms in the labour market.
-
-The simulation function can be used to generate empirical predictions and test theoretical models of labour market dynamics. By comparing the simulation results to real-world data, researchers can validate the model and identify areas for further research and development.
-
-Overall, the simulation function provides a valuable tool for studying labour market outcomes, understanding the mechanisms of labour mismatch, and exploring the effects of treatment interventions on the matching process. By simulating different scenarios and treatment effects, researchers can gain new insights into the dynamics of the labour market and inform policy decisions to improve labour market efficiency and outcomes.
-
-Author: 
-Date: 
-"""
-
 import os
 import pandas as pd
 import numpy as np
@@ -201,9 +92,9 @@ def compatibility_distance(char1_w, char1_j, char1_max, char2_w, char2_j, char2_
 # Simulation parameters
 """
 n = 100
-reps = 1000
+reps = 100
 seed = 0
-spec = '_n100x1000_extra_rskill'
+spec = '_n100x100_extra_rskill'
 w_treatment = False
 j_treatment = True
 w_treatment_prob = 0.5
@@ -216,9 +107,9 @@ well_matched_threshold = 0.7229727
 """
 
 def simulate(n = 100,
-              reps = 1000,
+              reps = 100,
               seed = 0,
-              spec = '_n100x1000_notreat',
+              spec = '_n100x100_notreat',
               w_treatment = False,
               j_treatment = False,
               w_treatment_prob = 0.5,
@@ -237,11 +128,11 @@ def simulate(n = 100,
     n : int, optional
         The number of workers and firms in the simulation. Default is 100.
     reps : int, optional
-        The number of replications of the simulation. Default is 1000.
+        The number of replications of the simulation. Default is 100.
     seed : int, optional
         The seed for the random number generator. Default is 0.
     spec : str, optional
-        The simulation specification name. Default is '_n100x1000_notreat'.
+        The simulation specification name. Default is '_n100x100_notreat'.
     w_treatment : bool, optional
         Whether to apply treatment to workers. Default is False.
     j_treatment : bool, optional
@@ -275,9 +166,9 @@ def simulate(n = 100,
     Examples
     --------
     >>> stats, workers, jobs, log = toymsim_lm(n = 100,
-                                                reps = 1000,
+                                                reps = 100,
                                                 seed = 0,
-                                                spec = '_n100x1000_notreat',
+                                                spec = '_n100x100_notreat',
                                                 w_treatment = False,
                                                 j_treatment = False,
                                                 w_treatment_prob = 0.5,
@@ -621,7 +512,7 @@ def simulate(n = 100,
                                     workers.loc[i, 'r_skill'] = jobs['skill'][network_index[k]]
 
                                     # Add a record to the log
-                                    log.append(str(round(compat,2)) + ': unmatched ' + str(i) + ' matched with unmatched ' + str(network_index[k]))
+                                    log.append('Compatibility: ' + str(round(compat,2)) + '. Outcome: unmatched worker ' + str(i) + ' matched with unmatched job ' + str(network_index[k]))
                                     
                                     # Update the count of unmatched workers matching with unmatched jobs
                                     uw_uj += 1
@@ -666,7 +557,7 @@ def simulate(n = 100,
                                         # Update the no jobs left indicator
                                         none_left = True
                                         # Add a record to the log
-                                        log.append(str(round(compat,2)) + ': unmatched ' + str(i) + ' failed to match')
+                                        log.append('Compatibility: ' + str(round(compat,2)) + '. Outcome: unmatched worker' + str(i) + ' failed to match')
 
                             # --------------------------------
                             # For a matched job
@@ -697,7 +588,7 @@ def simulate(n = 100,
                                     workers.loc[i, 'r_skill'] = jobs['skill'][network_index[k]]
                                     
                                     # Add a record to the log
-                                    log.append(str(round(compat, 2)) + ': unmatched ' + str(i) + ' matched with matched ' + str(network_index[k]))
+                                    log.append('Compatibility: ' + str(round(compat, 2)) + '. Outcome: unmatched worker ' + str(i) + ' matched with matched job ' + str(network_index[k]))
                                     
                                     # Update the count of unmatched workers matching with matched jobs
                                     uw_mj += 1
@@ -742,7 +633,7 @@ def simulate(n = 100,
                                         # Update the no jobs left indicator
                                         none_left = True
                                         # Add a record to the log
-                                        log.append(str(round(compat,2)) + ': unmatched ' + str(i) + ' failed to match')
+                                        log.append('Compatibility: ' + str(round(compat,2)) + '. Outcome: unmatched worker ' + str(i) + ' failed to match')
                     
                     # --------------------------------
                     # For a matched worker
@@ -847,7 +738,7 @@ def simulate(n = 100,
                                     workers.loc[i, 'r_skill'] = jobs['skill'][network_index[k]]
                                     
                                     # Add a record to the log
-                                    log.append(str(round(compat,2)) + ': matched ' + str(i) + ' matched with unmatched ' + str(network_index[k]))
+                                    log.append('Compatibility: ' + str(round(compat,2)) + '. Outcome: matched worker ' + str(i) + ' matched with unmatched job ' + str(network_index[k]))
                                     
                                     # Update the count of matched workers matching with unmatched jobs
                                     mw_uj += 1
@@ -892,7 +783,7 @@ def simulate(n = 100,
                                         # Update the no jobs left indicator
                                         none_left = True
                                         # Add a record to the log
-                                        log.append(str(round(compat,2)) + ': matched ' + str(i) + ' failed to match')
+                                        log.append('Compatibility: ' + str(round(compat,2)) + '. Outcome: matched worker ' + str(i) + ' failed to match')
                             
                             # --------------------------------
                             # For a matched job
@@ -927,7 +818,7 @@ def simulate(n = 100,
                                     workers.loc[i, 'r_skill'] = jobs['skill'][network_index[k]]
                                     
                                     # Add a record to the log
-                                    log.append(str(round(compat,2)) + ': matched ' + str(i) + ' matched with matched ' + str(network_index[k]))
+                                    log.append('Compatibility: ' + str(round(compat,2)) + '. Outcome: matched worker ' + str(i) + ' matched with matched job ' + str(network_index[k]))
                                     
                                     # Update the count of matched workers matching with matched jobs
                                     mw_mj += 1
@@ -972,7 +863,7 @@ def simulate(n = 100,
                                         # Update the no jobs left indicator
                                         none_left = True
                                         # Add a record to the log
-                                        log.append(str(round(compat,2)) + ': matched ' + str(i) + ' failed to match')
+                                        log.append('Compatibility: ' + str(round(compat,2)) + '. Outcome: matched worker ' + str(i) + ' failed to match')
             
             # !!! potentially redundant !!!
             """
@@ -1208,23 +1099,30 @@ def simulate(n = 100,
         # Update the rep counter
         rep += 1
 
+    # Simulation end message
+    print()
+    print('Simulation complete')
+
+    # Data saving message
+    print()
+    print('Saving the data...')
+
+
+
+    # Convert log to pandas DataFrame
+    log= pd.DataFrame(log, columns=['log'])
+
     # Save the data
     workers.to_csv('workers' + spec +'.csv')
     jobs.to_csv('jobs' + spec +'.csv')
     stats.to_csv('stats' + spec +'.csv')
+    log.to_csv('log' + spec +'.csv')
 
     # Data saving message
     print()
     print('File workers' + spec +'.csv is saved to ' + os.getcwd())
     print('File jobs' + spec +'.csv is saved to ' + os.getcwd())
     print('File stats' + spec +'.csv is saved to ' + os.getcwd())
-
-    # Post-simulation stats message
-    print()
-    print('---------------------------------------')
-    print('STATS')
-    print('---------------------------------------')
-    print(stats)
-    print('---------------------------------------')
+    print('File log' + spec +'.csv is saved to ' + os.getcwd())
 
     return workers, jobs, stats, log
