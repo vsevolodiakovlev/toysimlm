@@ -2,8 +2,7 @@
 
 [Usage](#to-use-the-module) | [References](#references)
 
-This module implements a simple midcrosimulation of a labour mismatch based on a static version of the two-sided matching model developed by Zinn et al. (2012). The purpose of the simulation is to produce matching outcomes of a labour market populated by a set of workers and a set of jobs with pre-defined characteristics and compute the output of various mismatch measure. This can then be analysed to gain a deeper understandin of the construct of the mismatch measures. For the description of the economic model and a demonstration, please see the [slides](./toysimlm_slides.pdf).
-
+This module implements a simple midcrosimulation of a labour mismatch based on a static version of the two-sided matching model developed by Zinn et al. (2012). The purpose of the simulation is to produce matching outcomes of a labour market populated by a set of workers and a set of jobs with pre-defined characteristics and compute the output of various mismatch measure. This can then be analysed to gain a deeper understandin of the construct of the mismatch measures. For the description of the economic model, available mismatch measures and a demonstration, please see the [slides](./toysimlm_slides.pdf).
 
 **Please note that this microsimulation is based on a stylized *(toy)* model and should be taken as more of a methodological experiment and illustration than a inference tool. Nevertheless, any suggestion regarding either the code or economics are most welcome**
 
@@ -11,7 +10,7 @@ This module implements a simple midcrosimulation of a labour mismatch based on a
 
 1. Create a new direcory where you want the simulation output files to be generated and make it your working directory
 2. Clone the repository to that directory
-3. Make sure ``pandas`` package is installed
+3. Make sure ``pandas`` package is installed and updated
 4. Import the module:
 ```python
 import toysimlm
