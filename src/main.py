@@ -1,3 +1,12 @@
+"""
+Toy microsimulation of labour mismatch.
+
+The main function of the simulation is `simulate`. To learn more about the simulation parameters, run `help(toysimlm.simulate)`.
+
+The module also contains two helper functions: `generate_random_sequence` and `compatibility_distance`.
+Both functions are used in the `simulate` function and do not need to be called separately.
+"""
+
 import os
 import pandas as pd
 import numpy as np
@@ -31,13 +40,9 @@ def generate_random_sequence(distribution, size, *args, **kwargs):
     Examples
     --------
     >>> generate_random_sequence('uniform', 10, 0, 1)
-    [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
     >>> generate_random_sequence('normal', 10, 0, 1)
-    [-0.2, 0.1, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1.0, 1.1]
     >>> generate_random_sequence('beta', 10, 2, 5)
-    [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
     >>> generate_random_sequence('log', 10, 0, 1)
-    [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
     """
 
     if distribution == 'uniform':
@@ -89,23 +94,6 @@ def compatibility_distance(char1_w, char1_j, char1_max, char2_w, char2_j, char2_
     # compatibility = '{0:.10f}'.format(compatibility)
     return compatibility
 
-# Simulation parameters
-"""
-n = 100
-reps = 100
-seed = 0
-spec = '_n100x100_extra_rskill'
-w_treatment = False
-j_treatment = True
-w_treatment_prob = 0.5
-j_treatment_prob = 0.5
-w_skill_treatment_mag = 46 * 2
-w_edu_treatment_mag = 0.9 * 2
-j_skill_treatment_mag = 46 * 2
-j_edu_treatment_mag = 0.9 * 2
-well_matched_threshold = 0.7229727
-"""
-
 def simulate(n = 100,
               reps = 100,
               seed = 0,
@@ -118,7 +106,9 @@ def simulate(n = 100,
               w_edu_treatment_mag = 0.9 * 2,
               j_skill_treatment_mag = 46 * 2,
               j_edu_treatment_mag = 0.9 * 2,
-              well_matched_threshold=0.7229727):
+              well_matched_threshold=0.7229727,
+              sim_rep_updates = False,
+              worker_updates = False):
 
     """
     Run the toy simulation of labour mismatch.
@@ -151,6 +141,10 @@ def simulate(n = 100,
         The magnitude of education treatment for firms. Default is 1.8.
     well_matched_threshold : float, optional
         The threshold for well-matched agents. Default is 0.7229727.
+    sim_rep_updates : bool, optional
+        If True, the data will be saved after every iteration. Default is False.
+    worker_updates : bool, optional
+        If True, the data will be saved each time a worker is goes through the matching procedure. Default is False.
 
     Returns
     -------
@@ -177,7 +171,9 @@ def simulate(n = 100,
                                                 w_edu_treatment_mag = 0.9 * 2,
                                                 j_skill_treatment_mag = 46 * 2,
                                                 j_edu_treatment_mag = 0.9 * 2,
-                                                well_matched_threshold=0.7229727)
+                                                well_matched_threshold=0.7229727,
+                                                sim_rep_updates = False,
+                                                worker_updates = False)
     """
 
     # Seeds
@@ -278,10 +274,6 @@ def simulate(n = 100,
         # Make sure compatibility is a float
         workers['compat'] = workers['compat'].astype(float)
 
-        # !!! potentially redundant !!!
-        # mean = np.mean(workers['prev_earn'])
-        # sd = np.std(workers['prev_earn'])
-
         # Aspiration (selectivity in the slides)
         workers['aspir'] = generate_random_sequence('normal', n, 0.5, 0.1)
         workers['aspir'] = workers['aspir'].clip(0, 1)
@@ -333,10 +325,6 @@ def simulate(n = 100,
 
         # Make sure compatibility is a float
         jobs['compat'] = jobs['compat'].astype(float)
-
-        # !!! potentially redundant !!!
-        # mean = np.mean(jobs['wage'])
-        # sd = np.std(jobs['wage'])
         
         # Aspiration (selectivity in the slides)
         jobs['aspir'] = generate_random_sequence('normal', n, 0.5, 0.1)
@@ -399,11 +387,6 @@ def simulate(n = 100,
         # Matching loop
         while all_matched == False:
             iterat += 1
-            
-            # !!! potentially redundant !!!
-            # Update average compatibility level for workers after the first iteration
-            if iterat == 2:
-                av_compat_1 = workers['compat'].mean()
             
             # Loop through all workers
             for i in workers.index:
@@ -473,9 +456,6 @@ def simulate(n = 100,
                         k = 0
                         # Check if no match has occured and there are still jobs in the network
                         while (match == False) and (none_left == False):
-                            
-                            # !!! potentially redundant !!!
-                            # print(str(i) + ' applies for ' + str(network_index[k]) + ', number ' + str(k))
                             
                             # Pull the agents' characteristics from the dataset
                             aspir_i = workers['aspir'][i]
@@ -696,9 +676,6 @@ def simulate(n = 100,
                         k = 0
                         while (match == False) and (none_left == False):
 
-                            # !!! potentially redundant !!!
-                            # print(str(i) + ' applies for ' + str(network_index[k]) + ', number ' + str(k))
-
                             # Pull the agents' characteristics from the dataset
                             aspir_i = workers['aspir'][i]
                             aspir_j = jobs['aspir'][network_index[k]]
@@ -864,26 +841,17 @@ def simulate(n = 100,
                                         none_left = True
                                         # Add a record to the log
                                         log.append('Compatibility: ' + str(round(compat,2)) + '. Outcome: matched worker ' + str(i) + ' failed to match')
+                
+                # Save the data after a worker has been through the matching procedure
+                if worker_updates == True:
+                    # Convert log to pandas DataFrame
+                    log_df= pd.DataFrame(log, columns=['log'])
+
+                    # Save the data
+                    workers.to_csv('workers' + spec +'.csv')
+                    jobs.to_csv('jobs' + spec +'.csv')
+                    log_df.to_csv('log' + spec +'.csv')
             
-            # !!! potentially redundant !!!
-            """
-            if iterat > 0:
-                log_df = {'record': log}
-                log_df = pd.DataFrame(log)
-                log_df.to_csv('log' + spec +'.csv')
-                workers.to_csv('workers' + spec +'.csv')
-                jobs.to_csv('jobs' + spec +'.csv')
-            """
-
-        # !!! potentially redundant !!!
-        """
-        mean = np.mean(workers['compat'])
-        sd = np.std(workers['compat'])
-        workers['well_matched'] = np.random.beta(5 - (workers['compat'] - mean) / sd / 2,
-                                                5 + (workers['compat'] - mean) / sd / 2)
-        workers['well_matched'] = round(workers['well_matched'])
-        """
-
         # --------------------------------------
         # Calculating output of mismatch measures
         # --------------------------------------
@@ -999,57 +967,8 @@ def simulate(n = 100,
         # Calculate average compatibility levels after the simulation
         av_compat_fin = workers['compat'].mean()
 
-        # !!! potentially redundant !!!
-        """
-        # print info
-        print()
-        print('---------------------------------------')
-        print('WORKERS')
-        print('---------------------------------------')
-        print(workers)
-        print('---------------------------------------')
-
-        print()
-        print('---------------------------------------')
-        print('JOBS')
-        print('---------------------------------------')
-        print(jobs)
-        print('---------------------------------------')
-
-        print()
-        print('---------------------------------------')
-        print('LOG')
-        print('---------------------------------------')
-        for record in log:
-            print(record)
-        print('---------------------------------------')
-
-        print()
-        print('---------------------------------------')
-        print('SUMMARY')
-        print('---------------------------------------')
-        print('iterations: ' + str(iterat))
-        print('UW-UJ matches: ' + str(uw_uj))
-        print('UW-MJ matches: ' + str(uw_mj))
-        print('MW-UJ matches: ' + str(mw_uj))
-        print('MW-MJ matches: ' + str(uw_uj))
-        print('Failed to match: ' + str(match_fail))
-        print('Worker rejects: ' + str(w_rejects))
-        print('Firm rejects: ' + str(j_rejects))
-        print('Mutual rejects: ' + str(mututal_reject))
-        print('Average aspir (worker, before): ' + str(av_aspir_w1))
-        print('Average aspir (worker, after): ' + str(av_aspir_w2))
-        print('Average aspir (job, before): ' + str(av_aspir_j1))
-        print('Average aspir (job, after): ' + str(av_aspir_j2))
-        print('Average compat (1st iter): ' + str(av_compat_1))
-        print('Average compat (final): ' + str(av_compat_fin))
-        print('---------------------------------------')
-        
-        """
-
-        
         if iterat == 1:
-            # Calculate average aspiration levels for workers after the first iteration
+            # Calculate average compatibility levels after the first iteration
             av_compat_1 = workers['compat'].mean()
 
         # New record for the simulation stats dataframe
@@ -1090,12 +1009,18 @@ def simulate(n = 100,
                     'w_treated': 1 - workers['treatment'].value_counts(normalize=True)[0],
                     'j_treated': 1 - jobs['treatment'].value_counts(normalize=True)[0]}
         stats.loc[len(stats)] = new_record
-
-        # !!! potentially redundant !!!
-        """
-        stats.to_csv('stats' + spec +'.csv')
-        """
         
+        # Save the data after every iteration
+        if sim_rep_updates == True:
+            # Convert log to pandas DataFrame
+            log_df= pd.DataFrame(log, columns=['log'])
+
+            # Save the data
+            workers.to_csv('workers' + spec +'.csv')
+            jobs.to_csv('jobs' + spec +'.csv')
+            stats.to_csv('stats' + spec +'.csv')
+            log_df.to_csv('log' + spec +'.csv')
+
         # Update the rep counter
         rep += 1
 
@@ -1107,16 +1032,14 @@ def simulate(n = 100,
     print()
     print('Saving the data...')
 
-
-
     # Convert log to pandas DataFrame
-    log= pd.DataFrame(log, columns=['log'])
+    log_df= pd.DataFrame(log, columns=['log'])
 
     # Save the data
     workers.to_csv('workers' + spec +'.csv')
     jobs.to_csv('jobs' + spec +'.csv')
     stats.to_csv('stats' + spec +'.csv')
-    log.to_csv('log' + spec +'.csv')
+    log_df.to_csv('log' + spec +'.csv')
 
     # Data saving message
     print()
