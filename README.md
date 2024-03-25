@@ -2,20 +2,20 @@
 
 [Usage](#to-use-the-module) | [Examples](#other-examples) | [Codebook](#codebook) | [References](#references)
 
-This module implements a simple microsimulation of labour mismatch based on a static version of the two-sided matching model developed by Zinn et al. (2012). The purpose of the simulation is to produce matching outcomes of a labour market populated by a set of workers and a set of jobs with pre-defined characteristics and compute the output of various mismatch measure. This can then be analysed to gain a deeper understandin of the construct of the mismatch measures. For the description of the economic model, available mismatch measures and a demonstration, please see the [slides](./toysimlm_slides.pdf).
+This module implements a simple microsimulation of labour mismatch based on a static version of the two-sided matching model developed by Zinn et al. (2012). The purpose of the simulation is to produce matching outcomes of a labour market populated by a set of workers and a set of jobs with pre-defined characteristics and compute the output of various mismatch measures. This can then be analysed to gain a deeper understanding of the construct of the mismatch measures. For the description of the economic model, available mismatch measures and a demonstration, please see the [slides](./toysimlm_slides.pdf).
 
-Avaialbe mismatch measures:
+Available mismatch measures:
 - Realised Matches (RM)
 - Indirect Self-Assessment (ISA)
 - Pellizzari and Fichen (2017) (PF)
 
-*Please note that this microsimulation is based on a stylized **(toy)** model and should be taken as more of a methodological experiment and illustration than a inference tool.*
+*Please note that this microsimulation is based on a stylized **(toy)** model and should be taken as more of a methodological experiment and illustration than an inference tool.*
 
-*Any suggestion regarding either the code or economic model are most welcome!*
+*Any suggestions regarding either the code or economic model are most welcome!*
 
 ## To use the module
 
-1. Create a new direcory where you want the simulation output files to be generated and make it your working directory
+1. Create a new directory where you want the simulation output files to be generated and make it your working directory
 2. Clone the repository to that directory
 3. Make sure ``pandas`` package is installed
 4. Import the module:
@@ -27,8 +27,8 @@ import toysimlm
 ```python
 stats, workers, jobs, log = toysimlm.simulate()
 ```
-7. This produces 4 csv files:
- - **stats** — main output file contaiining the simulation statistics for each repetition, including the shares of under, well and over matched workers according to 3 different measures
+7. This produces 4 CSV files:
+ - **stats** — main output file containing the simulation statistics for each repetition, including the shares of under, well and over-matched workers according to 3 different measures
  - **workers** and **jobs** — additional files containing the corresponding characteristics in the last repetition that illustrate the pre-defined distributions 
  - **log** — additional file containing matching outcomes for each iteration of the matching procedure for the last repetition illustrating the algorithm
 8. Analyse the simulation output using a statistical software of your choice
@@ -63,14 +63,14 @@ stats, workers, jobs, log = toysimlm.simulate(sim_rep_updates = True,
 
 ### Stats
 - **iterat** - number of iterations
-- **uw_uj** - unmatched workers matching with unmatched job count
-- **uw_mj** - unmatched workers matching with matched job count
-- **mw_uj** - matched workers matching with unmatched job count
-- **mw_mj** - matched workers matching with matched job count
-- **match_fail** - failed matches count
-- **w_rejects** - rejections by the workers count
-- **j_rejects** - rejections by the firms count
-- **mututal_reject** - mutual rejections count
+- **uw_uj** - unmatched workers matching with unmatched job
+- **uw_mj** - unmatched workers matching with matched job
+- **mw_uj** - matched workers matching with unmatched job
+- **mw_mj** - matched workers matching with matched job
+- **match_fail** - failed matches
+- **w_rejects** - rejections by the workers
+- **j_rejects** - rejections by the firms
+- **mututal_reject** - mutual rejections
 - **av_aspir_w1** - average aspiration level for workers before the simulation
 - **av_aspir_w2** - average aspiration level for workers after the simulation
 - **av_aspir_j1** - average aspiration level for firms before the simulation
