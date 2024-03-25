@@ -37,26 +37,26 @@ stats, workers, jobs, log = toysimlm.simulate()
 
  - Run the simulation for 1000 reps instead of 100; with probability 0.75, increase workers' education by 1.8 (two standard deviations):
  ```python
-stats, workers, jobs, log = simulate(reps = 1000,
-                                      spec = '_n100x1000_edu_inc',
-                                      w_treatment = True,
-                                      w_treatment_prob = 0.75
-                                      w_edu_treatment_mag = 0.9 * 2)
+stats, workers, jobs, log = toysimlm.simulate(reps = 1000,
+                                               spec = '_n100x1000_edu_inc',
+                                               w_treatment = True,
+                                               w_treatment_prob = 0.75
+                                               w_edu_treatment_mag = 0.9 * 2)
  ```
 
 - Set the numbers of workers and firms to 200 each;  with probability 0.3, decrease firms' skill requirement by 92 (two standard deviations):
  ```python
-stats, workers, jobs, log = simulate(n = 200,
-                                      spec = '_n200x100_skillreq_dec',
-                                      j_treatment = True,
-                                      j_treatment_prob = 0.3
-                                      j_skill_treatment_mag = -92)
+stats, workers, jobs, log = toysimlm.simulate(n = 200,
+                                               spec = '_n200x100_skillreq_dec',
+                                               j_treatment = True,
+                                               j_treatment_prob = 0.3
+                                               j_skill_treatment_mag = -92)
  ``` 
 
 - Run the simulation while saving the data after each iteration and every time a worker is taken through the matching procedure (as opposed to upon the completion). If either ``n`` and ``reps`` are large, this may increase the completion time of the simulation considerably but could be useful for troubleshooting.
  ```python
-stats, workers, jobs, log = simulate(sim_rep_updates = True,
-                                      worker_updates = True)
+stats, workers, jobs, log = toysimlm.simulate(sim_rep_updates = True,
+                                               worker_updates = True)
  ```
 
 ## Codebook
