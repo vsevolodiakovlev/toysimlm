@@ -130,6 +130,6 @@ stats, workers, jobs, log = simulate(sim_rep_updates = True,
 
 ## References
 
-- Michele Pellizzari and Anne Fichen. A new measure of skill mismatch: theory and evidence from PIAAC. IZA Journal of Labor Economics, 6(1):1–30, 2017.
+- Pellizzari, M. and Fichen, A. (2017). A new measure of skill mismatch: theory and evidence from PIAAC. IZA Journal of Labor Economics, 6(1):1–30.
 
- - Sabine Zinn et al. A mate-matching algorithm for continuous-time microsimulation models. International journal of microsimulation, 5(1):31–51, 2012.
+ - Zinn, S. et al. (2012). A mate-matching algorithm for continuous-time microsimulation models. International journal of microsimulation, 5(1):31–51.
