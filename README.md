@@ -9,7 +9,9 @@ Avaialbe mismatch measures:
 - Indirect Self-Assessment (ISA)
 - Pellizzari and Fichen (2017) (PF)
 
-*Please note that this microsimulation is based on a stylized **(toy)** model and should be taken as more of a methodological experiment and illustration than a inference tool. Nevertheless, any suggestion regarding either the code or economics are most welcome*
+*Please note that this microsimulation is based on a stylized **(toy)** model and should be taken as more of a methodological experiment and illustration than a inference tool.*
+
+*Any suggestion regarding either the code or economic model are most welcome!*
 
 ## To use the module
 
