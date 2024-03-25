@@ -1241,7 +1241,6 @@ def simulate(n = 100,
                                 'av_compat_fin', # average compatibility level for workers after the simulation
                                 'w_edu', # average workers' education
                                 'w_skill', # average workers' skill
-                                'w_prev_earn', # average workers' previous earnings
                                 'occupat_0', # number of workers in occupation 0
                                 'occupat_1', # number of workers in occupation 1
                                 'occupat_2', # number of workers in occupation 2
@@ -1289,11 +1288,6 @@ def simulate(n = 100,
         literacy = [0 if num < 0 else num for num in literacy]
         literacy = [500 if num > 500 else num for num in literacy]
 
-        # Previous earnings
-        prev_earn = generate_random_sequence('log', n, 2.446547, .7075674)
-        prev_earn = [round(num) for num in prev_earn]
-        prev_earn = [0 if num < 0 else num for num in prev_earn]
-
         # Compatibility
         compat = [0]*n
 
@@ -1307,7 +1301,6 @@ def simulate(n = 100,
         # Put the data into a dataframe
         data = {'edu': isco_sl,
                 'skill': literacy,
-                'prev_earn': prev_earn,
                 'compat': compat,
                 'match': match,
                 'r_edu' : r_edu,
@@ -2032,7 +2025,6 @@ def simulate(n = 100,
                     'av_compat_fin' : av_compat_fin,
                     'w_edu': workers['edu'].mean(),
                     'w_skill': workers['skill'].mean(),
-                    'w_prev_earn': workers['prev_earn'].median(),
                     'occupat_0': workers['occupat'].value_counts()[0],
                     'occupat_1': workers['occupat'].value_counts()[1],
                     'occupat_2': workers['occupat'].value_counts()[2],
