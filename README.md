@@ -19,11 +19,11 @@ Available mismatch measures:
 2. Clone the repository to that directory
 3. Make sure ``pandas`` package is installed
 4. Import the module:
-```python
-import toysimlm
-```
-5. Type ``help(toysimlm)`` to view the module's description or ``help(toysimlm.simulate)`` for the simulation parameters
-6. Run the simulation with default parameters:
+    ```python
+     import toysimlm
+    ```
+6. Type ``help(toysimlm)`` to view the module's description or ``help(toysimlm.simulate)`` for the simulation parameters
+7. Run the simulation with default parameters:
 ```python
 stats, workers, jobs, log = toysimlm.simulate()
 ```
