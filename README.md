@@ -2,7 +2,7 @@
 
 [Usage](#to-use-the-module) | [Examples](#other-examples) | [Codebook](#codebook) | [References](#references)
 
-This module implements a simple microsimulation of labour mismatch based on a static version of the two-sided matching model developed by Zinn et al. (2012). The purpose of the simulation is to produce matching outcomes of a labour market populated by a set of workers and a set of jobs with pre-defined characteristics and compute the output of various mismatch measures. This can then be analysed to gain a deeper understanding of the construct of the mismatch measures. For the description of the economic model, available mismatch measures and a demonstration, please see the [slides](./toysimlm_slides.pdf).
+This module implements a simple microsimulation of labour mismatch based on a static version of the two-sided matching model developed by Zinn (2012). The purpose of the simulation is to produce matching outcomes of a labour market populated by a set of workers and a set of jobs with pre-defined characteristics and compute the output of various mismatch measures. This can then be analysed to gain a deeper understanding of the construct of the mismatch measures. For the description of the economic model, available mismatch measures and a demonstration, please see the [slides](./toysimlm_slides.pdf).
 
 Available mismatch measures:
 - Realised Matches (RM)
@@ -35,16 +35,16 @@ stats, workers, jobs, log = toysimlm.simulate()
 
 ## Other examples
 
- - Run the simulation for 1000 reps instead of 100; with probability 0.75, increase workers' education by 1.8 (two standard deviations):
+ - Run the simulation for 1000 reps instead of 100; with probability 0.75 increase workers' education by 1.8 (two standard deviations):
  ```python
 stats, workers, jobs, log = toysimlm.simulate(reps = 1000,
                                                spec = '_n100x1000_edu_inc',
                                                w_treatment = True,
                                                w_treatment_prob = 0.75
-                                               w_edu_treatment_mag = 0.9 * 2)
+                                               w_edu_treatment_mag = 1.8)
  ```
 
-- Set the numbers of workers and firms to 200 each;  with probability 0.3, decrease firms' skill requirement by 92 (two standard deviations):
+- Set the numbers of workers and firms to 200 each instead of 100;  with probability 0.3 decrease firms' skill requirement by 92 (two standard deviations):
  ```python
 stats, workers, jobs, log = toysimlm.simulate(n = 200,
                                                spec = '_n200x100_skillreq_dec',
@@ -130,6 +130,5 @@ stats, workers, jobs, log = toysimlm.simulate(sim_rep_updates = True,
 
 ## References
 
-- Pellizzari, M. and Fichen, A. (2017). A new measure of skill mismatch: theory and evidence from PIAAC. IZA Journal of Labor Economics, 6(1):1–30.
-
- - Zinn, S. et al. (2012). A mate-matching algorithm for continuous-time microsimulation models. International journal of microsimulation, 5(1):31–51.
+- Pellizzari, M. and Fichen, A. (2017). *A new measure of skill mismatch: theory and evidence from PIAAC.* IZA Journal of Labor Economics, 6(1):1–30.
+- Zinn, S. (2012). *A mate-matching algorithm for continuous-time microsimulation models.* International journal of microsimulation, 5(1):31-51.
