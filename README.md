@@ -9,9 +9,9 @@ Available mismatch measures:
 - Indirect Self-Assessment (ISA)
 - Pellizzari and Fichen (2017) (PF)
 
-*Please note that this microsimulation is based on a stylized **(toy)** model and should be taken as more of a methodological experiment and illustration than an inference tool.*
+> *Please note that this microsimulation is based on a stylized **(toy)** model and should be taken as more of a methodological experiment and illustration than an inference tool.*
 
-*Any suggestions regarding either the code or economic model are most welcome!*
+> *Any suggestions regarding either the code or economic model are most welcome!*
 
 ## To use the module
 
@@ -19,9 +19,9 @@ Available mismatch measures:
 2. Clone the repository to that directory
 3. Make sure ``pandas`` package is installed
 4. Import the module:
-    ```python
-     import toysimlm
-    ```
+```python
+import toysimlm
+```
 6. Type ``help(toysimlm)`` to view the module's description or ``help(toysimlm.simulate)`` for the simulation parameters
 7. Run the simulation with default parameters:
 ```python
