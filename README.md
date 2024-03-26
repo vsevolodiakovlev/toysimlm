@@ -44,7 +44,7 @@ stats, workers, jobs, log = toysimlm.simulate(reps = 1000,
                                                w_edu_treatment_mag = 1.8)
  ```
 
-- Set the numbers of workers and firms to 200 each instead of 100;  with probability 0.3 decrease firms' skill requirement by 92 (two standard deviations):
+- Set the numbers of workers and firms to 200 each instead of 100;  with probability 0.3 decrease jobs' skill requirement by 92 (two standard deviations):
  ```python
 stats, workers, jobs, log = toysimlm.simulate(n = 200,
                                                spec = '_n200x100_skillreq_dec',
