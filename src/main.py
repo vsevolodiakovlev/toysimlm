@@ -131,7 +131,7 @@ def simulate(n = 100,
     j_edu_treatment_mag : float, optional
         The magnitude of education treatment for firms. Default is 0.
     well_matched_threshold : float, optional
-        The threshold for well-matched agents. Default is 0.7229727.
+        The threshold for well-matched agents (mimics Direct Self-Assessment, required for PF). Default is 0.7229727.
     sim_rep_updates : bool, optional
         If True, the data will be saved after every iteration. Default is False.
     worker_updates : bool, optional
