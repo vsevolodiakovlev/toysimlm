@@ -9,9 +9,9 @@ Available mismatch measures:
 - Indirect Self-Assessment (ISA)
 - Pellizzari and Fichen (2017) (PF)
 
-> *Please note that this microsimulation is based on a stylized **(toy)** model and should be taken as more of a methodological experiment and illustration than an inference tool.*
+*Please note that this microsimulation is based on a stylized **(toy)** model and should be taken as more of a methodological experiment and illustration than an inference tool.*
 
-> *Any suggestions regarding either the code or economic model are most welcome!*
+*Any suggestions regarding either the code or economic model are most welcome!*
 
 ## To use the module
 
