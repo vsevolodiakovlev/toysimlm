@@ -25,8 +25,8 @@ Available mismatch measures:
 ```python
 import toysimlm
 ```
-6. Type ``help(toysimlm)`` to view the module's description or ``help(toysimlm.simulate)`` for the simulation parameters
-7. Run the simulation with default parameters:
+5. Type ``help(toysimlm)`` to view the module's description or ``help(toysimlm.simulate)`` for the simulation parameters
+6. Run the simulation with default parameters:
 ```python
 stats, workers, jobs, log = toysimlm.simulate()
 ```
