@@ -2,7 +2,7 @@
 
 [Usage](#to-use-the-module) | [Examples](#other-examples) | [Codebook](#codebook) | [References](#references)
 
-This module implements a simple microsimulation of labour mismatch based on a static version of the two-sided matching model developed by Zinn (2012). The purpose of the simulation is to produce matching outcomes of a labour market populated by a set of workers and a set of jobs with pre-defined characteristics and compute the output of various mismatch measures. This can then be analysed to gain a deeper understanding of the construct of the mismatch measures. For the description of the economic model, available mismatch measures and a demonstration, please see the [slides](./toysimlm_slides.pdf).
+This module implements a simple microsimulation of labour mismatch based on a static version of the two-sided matching model developed by Zinn (2012). The purpose of the simulation is to produce matching outcomes of a labour market populated by a set of workers and a set of jobs with pre-defined characteristics and compute the output of multiple mismatch measures, which can then be analysed to gain a deeper understanding of their construct. For the description of the economic model, available mismatch measures and a demonstration, please see the [slides](./toysimlm_slides.pdf).
 
 Available mismatch measures:
 - Realised Matches (RM)
