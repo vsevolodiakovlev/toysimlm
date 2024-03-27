@@ -13,7 +13,12 @@ Available mismatch measures:
 
 *Any suggestions regarding either the code or economic model are most welcome!*
 
+<<<<<<< HEAD
+![Image Description](./figures/figure_light.jpg#gh-light-mode-only)
+![Image Description](./figures/figure_dark.jpg#gh-dark-mode-only)
+=======
 <img src="./demo.jpg" width="100%" height="100%" alt="Image Description">
+>>>>>>> f6f9b30b3fc83b09f1620f057c4be2ae9d54d9d1
 
 ## To use the module
 
