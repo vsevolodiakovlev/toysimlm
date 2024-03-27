@@ -13,7 +13,7 @@ Available mismatch measures:
 
 *Any suggestions regarding either the code or economic model are most welcome!*
 
-<img src="./demo.jpg" width="50%" height="50%" alt="Image Description">
+<img src="./demo.jpg" width="100%" height="100%" alt="Image Description">
 
 ## To use the module
 
