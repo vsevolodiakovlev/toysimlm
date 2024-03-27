@@ -119,9 +119,9 @@ def simulate(n = 100,
     j_treatment : bool, optional
         Whether to apply treatment to firms. Default is False.
     w_treatment_prob : float, optional
-        The probability of workers receiving treatment. Default is 0.5.
+        The probability of workers receiving treatment. Default is 0.25.
     j_treatment_prob : float, optional
-        The probability of firms receiving treatment. Default is 0.5.
+        The probability of firms receiving treatment. Default is 0.25.
     w_skill_treatment_mag : float, optional
         The magnitude of skill treatment for workers. Default is 0.
     w_edu_treatment_mag : float, optional

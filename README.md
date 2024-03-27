@@ -38,21 +38,21 @@ stats, workers, jobs, log = toysimlm.simulate()
 
 ## Other examples
 
- - Run the simulation for 1000 reps instead of 100; with probability 0.75 increase workers' education by 1.8 (two standard deviations):
+ - Run the simulation for 1000 reps instead of 100; with probability 0.25 increase workers' education by 1.8 (two standard deviations):
  ```python
 stats, workers, jobs, log = toysimlm.simulate(reps = 1000,
                                                spec = '_n100x1000_edu_inc',
                                                w_treatment = True,
-                                               w_treatment_prob = 0.75
+                                               w_treatment_prob = 0.25
                                                w_edu_treatment_mag = 1.8)
  ```
 
-- Set the numbers of workers and firms to 200 each instead of 100;  with probability 0.3 decrease jobs' skill requirement by 92 (two standard deviations):
+- Set the numbers of workers and firms to 200 each instead of 100;  with probability 0.5 decrease jobs' skill requirement by 92 (two standard deviations):
  ```python
 stats, workers, jobs, log = toysimlm.simulate(n = 200,
                                                spec = '_n200x100_skillreq_dec',
                                                j_treatment = True,
-                                               j_treatment_prob = 0.3
+                                               j_treatment_prob = 0.5
                                                j_skill_treatment_mag = -92)
  ``` 
 
