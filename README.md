@@ -13,6 +13,8 @@ Available mismatch measures:
 
 *Any suggestions regarding either the code or economic model are most welcome!*
 
+<img src="./demo.jpg" width="50%" height="50%" alt="Image Description">
+
 ## To use the module
 
 1. Create a new directory where you want the simulation output files to be generated and make it your working directory
