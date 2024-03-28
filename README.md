@@ -13,13 +13,8 @@ Available mismatch measures:
 
 *Any suggestions regarding either the code or economic model are most welcome!*
 
-<!--- ![Image Description](./figures/figure_light.jpg#gh-light-mode-only)
-![Image Description](./figures/figure_dark.jpg#gh-dark-mode-only) --->
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./figures/figure_dark.jpg">
-  <img src="./figures/figure_light.jpg">
-</picture>
+![Light mode figure](./figures/figure_light.jpg#gh-light-mode-only)
+![Dark mode figure](./figures/figure_dark.jpg#gh-dark-mode-only)
 
 
 ## To use the module
