@@ -17,9 +17,10 @@ Available mismatch measures:
 ![Image Description](./figures/figure_dark.jpg#gh-dark-mode-only) --->
 
 <picture>
-  <source srcset="./figures/figure_dark.jpg">
+  <source media="(prefers-color-scheme: dark)" srcset="./figures/figure_dark.jpg">
   <img src="./figures/figure_light.jpg">
 </picture>
+
 
 ## To use the module
 
